@@ -1,64 +1,77 @@
+
 import java.text.NumberFormat;
 import java.util.*;
 
+
+
 public class StatementPrinter {
 
-  // creation d'une methode print
-  public String print(Invoice invoice, Map<String, Play> plays) {
-    double totalAmount = 0; // int to double
-    int volumeCredits = 0;
+  double thisAmount = 0;
+
+  public String toText(Invoice invoice) {
+
     String result = String.format("Statement for %s\n", invoice.customer);
 
     StringBuffer res = new StringBuffer(result);
 
 
-    // NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
+    NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
-    // boucle sur une liste de performannces
+
     for (Performance perf : invoice.performances) {
-      // Retourne la valeur associée à la cle : perf.playID
-      Play play = plays.get(perf.playID);
-      double thisAmount = 0; // int to double
 
-      switch (play.type) {
-        case "tragedy":
-          thisAmount = 400;
-          if (perf.audience > 30) {
-            thisAmount += 10 * (perf.audience - 30);
-          }
-          break;
-        case "comedy":
-          thisAmount = 300;
-          if (perf.audience > 20) {
-            thisAmount += 100 + 5 * (perf.audience - 20);
-          }
-          thisAmount += 3 * perf.audience;
-          break;
-        default:
-          throw new Error("unknown type: ${play.type}");
-      }
-      // volume adeed just in case audience is over 30 , so all clients benefits from this credit in case audience >30
-
-      // add volume credits
-      volumeCredits += Math.max(perf.audience - 30, 0);
-      // add extra credit for every ten comedy attendees
-      if ("comedy".equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
-
-      // print line for this order
-      // why devided by 100
-      result = String.format("  %s: $%.2f (%s seats)\n", play.name, thisAmount , perf.audience);
+      thisAmount = perf.play.thisAmount(perf.audience);
+      result = String.format("  %s: $s (%s seats)\n", perf.play.name, frmt.format(thisAmount) , perf.audience);
       res.append(result);
 
-      totalAmount += thisAmount;
-
-
     }
-    result = String.format("Amount owed is $%.2f\n", totalAmount );
+
+    result = String.format("Amount owed is $s\n", frmt.format(invoice.TotalAmount()));
     res.append(result);
-    result = String.format("You earned %s credits\n", volumeCredits);
+    result = String.format("You earned %s credits\n", invoice.TotalCredits());
     res.append(result);
-    //return result;
+
     return res.toString();
+  }
+
+
+
+  public String toHtml(Invoice invoice  ) {
+
+    NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
+    String result = String.format(" <html>\n<head><h2> Inovice </h2></head> \n");
+
+
+    StringBuffer res = new StringBuffer(result);
+
+
+    result = String.format("<body>\n<p><b>Client : %s<b></p> \n", invoice.customer);
+    res.append(result);
+
+
+    result = String.format("<table border=2>\n<tr><th>Piece</th>\n<th>Seatsold</th>\n<th>Price</th>\n</tr>\n");
+    res.append(result);
+
+
+    for (Performance perf : invoice.performances) {
+      thisAmount = perf.play.thisAmount(perf.audience);
+      result =  String.format(" <tr>\n<td>%s</td>\n<td>%s</td>\n<td>%s</td>\n</tr>\n ",perf.play.name,perf.audience , frmt.format(thisAmount));
+      res.append(result);
+    }
+
+    result= String.format("<tr>\n<td colspan=2><b>Total owed:</b></td ma>\n<td> %s</td>\n</tr>\n", frmt.format(invoice.TotalAmount()));
+    res.append(result);
+
+    result= String.format("<tr>\n<td colspan=2><b>Fidelity point earned:</b></td>\n<td> %d</td>\n</tr>\n</table>\n", invoice.TotalCredits());
+    res.append(result);
+
+    result = String.format("\n<p>Payment is required under 30 days. We can break your knees if you don't do so.</p>\n</body>\n</html>");
+    res.append(result);
+
+    return res.toString();
+
+
+
   }
 
 }

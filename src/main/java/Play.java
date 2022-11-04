@@ -6,8 +6,8 @@ public class Play {
   public String type;
 
 // Création des variables statiques pour les types de pièces de théâtre
-  public final static String COMEDY="comedy" ;
-  public final static String TRAGEDY="tragedy" ;
+  public static String COMEDY="comedy" ;
+  public static String TRAGEDY="tragedy" ;
 
   public Play(String name, String type) {
     this.name = name;
@@ -20,7 +20,26 @@ public class Play {
   // and thus you do not need any if (bar == null) checks in other places!
 
   public String checkType(String type) {
-    if (type == "comedy" || type == "tragedy") return type;
+    if (type.equals("comedy") || type.equals("tragedy")) return type;
     return null;
+  }
+
+  public double thisAmount(int audience){
+    double amount = 0 ;
+    if (type.equals(TRAGEDY)){
+      amount = 400;
+      if (audience > 30){
+        amount += 10 * (audience - 30);
+      }
+    }
+
+    if (type.equals(COMEDY)){
+      amount =  300 ;
+      if (audience > 20){
+        amount += 100 + 5*(audience - 20);
+      }
+      amount += 3*audience ;
+    }
+    return amount;
   }
 }

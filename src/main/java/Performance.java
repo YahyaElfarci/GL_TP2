@@ -1,10 +1,13 @@
 public class Performance {
 
-  public String playID;
-  public int audience;
 
-  public Performance(String playID, int audience) {
-    this.playID = playID;
+  public int audience;
+  public Play play;
+
+  public Performance(Play play,int audience) {
+
     this.audience = audience;
+    this.play = play;
+
   }
 }
