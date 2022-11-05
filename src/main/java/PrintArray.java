@@ -21,6 +21,7 @@ public class PrintArray {
 
         StatementPrinter statementPrinter = new StatementPrinter();
         System.out.println(statementPrinter.toText(invoice));
+        // Dans la version Html le Total owed est égale à 1730$ car le nombre de point de crédit (52 points) est inférieur à 150 points -> Pas de réduction.
         System.out.println(statementPrinter.toHtml(invoice));
 
         try {

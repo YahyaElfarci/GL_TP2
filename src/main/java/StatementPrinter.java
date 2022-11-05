@@ -20,13 +20,13 @@ public class StatementPrinter {
 
     for (Performance perf : invoice.performances) {
 
-      thisAmount = perf.play.thisAmount(perf.audience);
-      result = String.format("  %s: $s (%s seats)\n", perf.play.name, frmt.format(thisAmount) , perf.audience);
+      thisAmount = perf.play.thisAmount(perf.audience, perf.play.type);
+      result = String.format("  %s: %s (%s seats)\n", perf.play.name, frmt.format(thisAmount) , perf.audience);
       res.append(result);
 
     }
 
-    result = String.format("Amount owed is $s\n", frmt.format(invoice.TotalAmount()));
+    result = String.format("Amount owed is %s\n", frmt.format(invoice.TotalAmount()));
     res.append(result);
     result = String.format("You earned %s credits\n", invoice.TotalCredits());
     res.append(result);
@@ -57,7 +57,7 @@ public class StatementPrinter {
 
 
     for (Performance perf : invoice.performances) {
-      thisAmount = perf.play.thisAmount(perf.audience);
+      thisAmount = perf.play.thisAmount(perf.audience,perf.play.type);
       result =  String.format(" <tr>\n<td>%s</td>\n<td>%s</td>\n<td>%s</td>\n</tr>\n ",perf.play.name,perf.audience , frmt.format(thisAmount));
       res.append(result);
     }

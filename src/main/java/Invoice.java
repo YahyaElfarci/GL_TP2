@@ -18,7 +18,7 @@ public class Invoice {
 
     for (Performance perf : performances) {
 
-      res = perf.play.thisAmount(perf.audience);
+      res = perf.play.thisAmount(perf.audience,perf.play.type);
       totalAmount += res ;
 
       totalAmount=customer.reduction(totalAmount);
@@ -34,7 +34,7 @@ public class Invoice {
 
       volumeCredits += Math.max(perf.audience - 30, 0);
       // add extra credit for every ten comedy attendees
-      if (perf.play.type.equals(perf.play.COMEDY)) volumeCredits += Math.floor(perf.audience / 5);
+      if (perf.play.type.equals("comedy")) volumeCredits += Math.floor(perf.audience / 5);
     }
     //volumeCredits = customer.updateSolde(customer.clientNumber, volumeCredits);
     return volumeCredits;

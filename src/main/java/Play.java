@@ -24,7 +24,7 @@ public class Play {
     return null;
   }
 
-  public double thisAmount(int audience){
+  public double thisAmount(int audience, String type){
     double amount = 0 ;
     if (type.equals(TRAGEDY)){
       amount = 400;
