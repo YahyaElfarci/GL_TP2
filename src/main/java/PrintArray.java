@@ -13,13 +13,13 @@ public class PrintArray {
                 "as-like", new Play("As You Like It", "comedy"),
                 "othello", new Play("Othello", "tragedy"));
 
-        Invoice invoice = new Invoice("BigCo", List.of(
+        Invoice invoice = new Invoice(new Customer("BigCo",1,155), List.of(
                 new Performance(plays.get("hamlet"), 55),
                 new Performance(plays.get("as-like"), 35),
                 new Performance(plays.get("othello"), 40)));
 
-        StatementPrinter statementPrinter = new StatementPrinter();
 
+        StatementPrinter statementPrinter = new StatementPrinter();
         System.out.println(statementPrinter.toText(invoice));
         System.out.println(statementPrinter.toHtml(invoice));
 

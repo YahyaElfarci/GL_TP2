@@ -10,7 +10,7 @@ public class StatementPrinter {
 
   public String toText(Invoice invoice) {
 
-    String result = String.format("Statement for %s\n", invoice.customer);
+    String result = String.format("Statement for %s\n", invoice.customer.name);
 
     StringBuffer res = new StringBuffer(result);
 
@@ -30,6 +30,9 @@ public class StatementPrinter {
     res.append(result);
     result = String.format("You earned %s credits\n", invoice.TotalCredits());
     res.append(result);
+    result = String.format("Fidelity point solde %s \n", invoice.customer.updateSolde(invoice.customer.clientNumber,invoice.TotalCredits()));
+    res.append(result);
+
 
     return res.toString();
   }
@@ -45,7 +48,7 @@ public class StatementPrinter {
     StringBuffer res = new StringBuffer(result);
 
 
-    result = String.format("<body>\n<p><b>Client : %s<b></p> \n", invoice.customer);
+    result = String.format("<body>\n<p><b>Client name : %s <b></p> \n", invoice.customer.name);
     res.append(result);
 
 
@@ -62,11 +65,16 @@ public class StatementPrinter {
     result= String.format("<tr>\n<td colspan=2><b>Total owed:</b></td ma>\n<td> %s</td>\n</tr>\n", frmt.format(invoice.TotalAmount()));
     res.append(result);
 
-    result= String.format("<tr>\n<td colspan=2><b>Fidelity point earned:</b></td>\n<td> %d</td>\n</tr>\n</table>\n", invoice.TotalCredits());
+    result= String.format("<tr>\n<td colspan=2><b>Fidelity point earned:</b></td>\n<td> %d</td>\n</tr>\n", invoice.TotalCredits());
+    res.append(result);
+
+    result= String.format("<tr>\n<td colspan=2><b>Fidelity point solde:</b></td>\n<td> %s</td>\n</tr>\n</table>\n",invoice.customer.updateSolde(invoice.customer.clientNumber,invoice.TotalCredits()));
     res.append(result);
 
     result = String.format("\n<p>Payment is required under 30 days. We can break your knees if you don't do so.</p>\n</body>\n</html>");
     res.append(result);
+
+
 
     return res.toString();
 

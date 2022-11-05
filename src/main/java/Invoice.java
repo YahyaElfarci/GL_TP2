@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Invoice {
 
-  public String customer;
+  public Customer customer;
   public List<Performance> performances;
 
-  public Invoice(String customer, List<Performance> performances) {
+  public Invoice(Customer customer, List<Performance> performances) {
     this.customer = customer;
     this.performances = performances;
   }
@@ -21,6 +21,8 @@ public class Invoice {
       res = perf.play.thisAmount(perf.audience);
       totalAmount += res ;
 
+      totalAmount=customer.reduction(totalAmount);
+
     }
     return totalAmount;
   }
@@ -34,6 +36,7 @@ public class Invoice {
       // add extra credit for every ten comedy attendees
       if (perf.play.type.equals(perf.play.COMEDY)) volumeCredits += Math.floor(perf.audience / 5);
     }
+    //volumeCredits = customer.updateSolde(customer.clientNumber, volumeCredits);
     return volumeCredits;
   }
 
